@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a className="download-btn" onClick="downloadFile()">下载二维码</a>
+    <a className="download-btn" onClick="downloadPdf()">下载PDF</a>
+  </body>
+  <script>
+    function downloadPdf() {
+      const a = document.createElement('a')
+      const url = './65PPT.pdf'
+      a.href = url
+      a.download = 'a.pdf'
+      a.click()
+    }
+    function downloadFile() {
+      const url = './home.jpeg'
+      const filename = 'dome.jpeg'
+      fetch(url, {
+        headers: new Headers({
+          Origin: location.origin
+        }),
+        mode: 'cors'
+      })
+        .then((res) => res.blob())
+        .then((blob) => {
+          const blobUrl = window.URL.createObjectURL(blob)
+          download(blobUrl, filename)
+          window.URL.revokeObjectURL(blobUrl)
+        })
+    }
+    function download(blobUrl, filename) {
+      const a = document.createElement('a')
+      a.href = blobUrl
+      a.target = '_blank'
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+    }
+  </script>
+</html>
